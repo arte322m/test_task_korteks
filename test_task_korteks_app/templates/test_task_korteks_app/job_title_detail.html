@@ -1,0 +1,30 @@
+{% extends 'test_task_korteks_app/base.html' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+
+<button>
+    <a href="{% url 'test_task_korteks_app:job_titles_list' %}">Назад</a>
+</button>
+
+    <br>
+
+    {{ job_title }}
+
+    <br>
+
+    <button>
+        <a href="{% url 'test_task_korteks_app:job_title_change' job_title %}">Изменить</a>
+    </button>
+
+    <br>
+
+    <form method="post" action="{% url 'test_task_korteks_app:delete_job_title' job_title %}">
+        {% csrf_token %}
+    <button type="submit">Удалить</button>
+    </form>
+
+{% endblock %}

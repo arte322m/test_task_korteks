@@ -1,0 +1,40 @@
+{% extends 'test_task_korteks_app/base.html' %}
+
+{% block title %}
+
+    Список должностей
+
+{% endblock %}
+
+{% block content %}
+
+    <button>
+        <a href={% url 'test_task_korteks_app:main' %}>Назад</a>
+    </button>
+
+    <br>
+
+    <button>
+        <a href="{% url 'test_task_korteks_app:job_title_add' %}">Добавить должность</a>
+    </button>
+
+    {% if job_titles_list %}
+
+        <ol>
+
+            {% for job_titles in job_titles_list %}
+                <li>
+                    <a href="{% url 'test_task_korteks_app:job_title_detail' job_titles.name %}">{{ job_titles.name}}</a>
+                </li>
+            {% endfor %}
+
+        </ol>
+
+    {% else %}
+
+        Список пуст
+
+    {% endif %}
+
+{% endblock %}
+

@@ -1,0 +1,23 @@
+{% extends 'test_task_korteks_app/base.html' %}
+
+{% block title %}
+    Добавление должности
+{% endblock %}
+
+{% block content %}
+    <button><a href="{% url 'test_task_korteks_app:job_titles_list' %}">Назад</a></button>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="InputName" >Введите название должности</label>
+        <input id="InputName" type="text" name="name" placeholder="Название" required>
+        <input type="submit" value="Добавить">
+
+    </form>
+
+    {% if creating %}
+        {{ creating }}
+    {% endif %}
+
+{% endblock %}
