@@ -1,0 +1,24 @@
+{% extends 'test_task_korteks_app/base.html' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+    <button>
+        <a href="{% url 'test_task_korteks_app:job_title_detail' job_title %}">Назад</a>
+    </button>
+    <br>
+    Текущее название: {{ job_title }}
+    <form method="post">
+        {% csrf_token %}
+
+        Введите новое название <input type="text" name="new_job_title_name" required>
+        <input type="submit" value="Изменить">
+    </form>
+
+    {% if changing %}
+        {{ changing }}
+    {% endif %}
+
+{% endblock %}
