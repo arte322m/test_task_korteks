@@ -24,7 +24,7 @@
 
             {% for job_titles in job_titles_list %}
                 <li>
-                    <a href="{% url 'test_task_korteks_app:job_title_detail' job_titles.name %}">{{ job_titles.name}}</a>
+                    <a href="{% url 'test_task_korteks_app:job_title_detail' job_titles.id %}">{{ job_titles.name}}</a>
                 </li>
             {% endfor %}
 

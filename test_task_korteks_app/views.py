@@ -21,42 +21,43 @@ def job_title_add(request):
         name = request.POST['name']
         try:
             JobTitle.objects.get(name=name)
-            context['creating'] = 'Такая должность уже существует'
+            context['message'] = 'Такая должность уже существует'
         except JobTitle.DoesNotExist:
             JobTitle.objects.create(name=name)
-            context['creating'] = 'добавлено'
+            context['message'] = 'добавлено'
 
     return render(request, 'test_task_korteks_app/job_title_add.html', context=context)
 
 
-def job_title_detail(request, job_title):
+def job_title_detail(request, job_title_id):
+    job_title = JobTitle.objects.get(id=job_title_id)
     context = {
         'job_title': job_title,
     }
     return render(request, 'test_task_korteks_app/job_title_detail.html', context=context)
 
 
-def job_title_change(request, job_title):
+def job_title_change(request, job_title_id):
+    job_title = JobTitle.objects.get(id=job_title_id)
     context = {
         'job_title': job_title
     }
     if request.method == 'POST':
         new_job_title_name = request.POST['new_job_title_name']
-        if job_title == new_job_title_name:
-            context['changing'] = 'Изменений нет'
+        if job_title.name == new_job_title_name:
+            context['message'] = 'Изменений нет'
             return render(request, 'test_task_korteks_app/job_title_change.html', context)
         try:
             JobTitle.objects.get(name=new_job_title_name)
-            context['changing'] = 'Такая должность уже существует'
+            context['message'] = 'Такая должность уже существует'
         except JobTitle.DoesNotExist:
-            job_title = JobTitle.objects.get(name=job_title)
             job_title.name = new_job_title_name
             job_title.save()
             return redirect('test_task_korteks_app:job_title_detail', job_title=new_job_title_name)
     return render(request, 'test_task_korteks_app/job_title_change.html', context)
 
 
-def delete_job_title(request, job_title):
-    job_title = JobTitle.objects.get(name=job_title)
+def delete_job_title(request, job_title_id):
+    job_title = JobTitle.objects.get(id=job_title_id)
     job_title.delete()
     return redirect('test_task_korteks_app:job_titles_list')
