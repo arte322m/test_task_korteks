@@ -1,0 +1,51 @@
+{% extends 'test_task_korteks_app/base.html' %}
+
+{% block title %}
+    Добавление сотрудника
+{% endblock %}
+
+{% block content %}
+
+    <button>
+        <a href="{% url 'test_task_korteks_app:employees_list' %}">Назад</a>
+    </button>
+    <br>
+
+    <form method="post">
+    {% csrf_token %}
+
+    Введите фамилию: <input type="text" name="surname" placeholder="Фамилия" required>
+        <br>
+    Введите Имя: <input type="text" name="firstname" placeholder="Имя" required>
+        <br>
+    Введите отчество: <input type="text" name="father_name" placeholder="Отчество">
+        <br>
+    Дата приема на работу: <input type="date" name="employment_date" placeholder="Дата принятия на работу" required>
+        <br>
+
+    {% if job_titles %}
+
+    Должность:
+        <select name="job_title">
+
+            {% for job_title in job_titles %}
+                <option value="{{ job_title }}">{{ job_title }}</option>>
+            {% endfor %}
+
+        </select>
+
+    {% else %}
+
+        Список должностей пуст
+
+    {% endif %}
+
+    <br>
+    <button type="submit">Добавить</button>
+    </form>
+
+    {% if message %}
+        {{ message }}
+    {% endif %}
+
+{% endblock %}

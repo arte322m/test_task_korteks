@@ -1,0 +1,34 @@
+{% extends 'test_task_korteks_app/base.html' %}
+
+{% block title %}
+    Список сотрудников
+{% endblock %}
+
+{% block content %}
+
+    <button>
+        <a href="{% url 'test_task_korteks_app:main' %}">
+            Назад
+        </a>
+    </button>
+    <br>
+
+    <button>
+        <a href="{% url 'test_task_korteks_app:employee_add' %}">Добавить сотрудника</a>
+    </button>
+    <br>
+    {% if employees_list %}
+        <ol>
+            {% for employee in employees_list   %}
+                <li>
+                    <a href={% url 'test_task_korteks_app:employee_detail' employee.id %}>
+                        {{ employee.surname }} {{ employee.firstname }}
+                    </a>
+                </li>
+            {% endfor %}
+            </ol>
+    {% else %}
+        Список сотрудников пуст
+    {% endif %}
+
+{% endblock %}
