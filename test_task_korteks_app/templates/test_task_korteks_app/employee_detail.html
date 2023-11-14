@@ -1,0 +1,39 @@
+{% extends 'test_task_korteks_app/base.html' %}
+
+{% block title %}
+    Сотрудник
+{% endblock %}
+
+{% block content %}
+
+    <button>
+        <a href="{% url 'test_task_korteks_app:employees_list' %}">
+            Назад
+        </a>
+    </button>
+    <br>
+
+    {{ employee.surname }} {{ employee.firstname }} {{ employee.father_name }}
+    <br>
+    Дата приема на работу: {{ employee.employment_date }}
+    <br>
+    {% if employee.job_title %}
+        Должность: {{ employee.job_title.name }}
+    {% else %}
+        Должность: отсутсвует
+    {% endif %}
+    <br>
+    <button>
+        <a  href={% url 'test_task_korteks_app:employee_change' employee.id %}>Изменить</a>
+    </button>
+
+    <form method='post' action="{% url 'test_task_korteks_app:employee_delete' employee.id %}">
+        {% csrf_token%}
+
+        <button type='submit'>
+            Удалить
+        </button>
+    </form>
+
+
+{% endblock %}

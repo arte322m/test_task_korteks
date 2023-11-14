@@ -22,7 +22,7 @@
 
     <br>
 
-    <form method="post" action="{% url 'test_task_korteks_app:delete_job_title' job_title.id %}">
+    <form method="post" action="{% url 'test_task_korteks_app:job_title_delete' job_title.id %}">
         {% csrf_token %}
     <button type="submit">Удалить</button>
     </form>
