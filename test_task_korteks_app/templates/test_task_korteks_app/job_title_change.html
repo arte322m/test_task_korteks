@@ -6,10 +6,10 @@
 
 {% block content %}
     <button>
-        <a href="{% url 'test_task_korteks_app:job_title_detail' job_title %}">Назад</a>
+        <a href="{% url 'test_task_korteks_app:job_title_detail' job_title.id %}">Назад</a>
     </button>
     <br>
-    Текущее название: {{ job_title }}
+    Текущее название: {{ job_title.name }}
     <form method="post">
         {% csrf_token %}
 
@@ -17,8 +17,8 @@
         <input type="submit" value="Изменить">
     </form>
 
-    {% if changing %}
-        {{ changing }}
+    {% if message %}
+        {{ message }}
     {% endif %}
 
 {% endblock %}
