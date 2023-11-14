@@ -53,7 +53,7 @@ def job_title_change(request, job_title_id):
         except JobTitle.DoesNotExist:
             job_title.name = new_job_title_name
             job_title.save()
-            return redirect('test_task_korteks_app:job_title_detail', job_title=new_job_title_name)
+            return redirect('test_task_korteks_app:job_title_detail', job_title_id=job_title_id)
     return render(request, 'test_task_korteks_app/job_title_change.html', context)
 
 
