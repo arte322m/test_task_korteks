@@ -1,3 +1,6 @@
+from django.core.exceptions import ValidationError
+from django.db import DataError
+
 from django.shortcuts import render, redirect
 
 from test_task_korteks_app.models import JobTitle, Employee
@@ -31,8 +34,13 @@ def job_title_add(request):
             JobTitle.objects.get(name=name)
             context['message'] = 'Такая должность уже существует'
         except JobTitle.DoesNotExist:
-            JobTitle.objects.create(name=name)
-            context['message'] = 'добавлено'
+            new_job_title = JobTitle(name=name)
+            try:
+                new_job_title.clean_fields()
+                new_job_title.save()
+                context['message'] = 'добавлено'
+            except ValidationError as error:
+                context['alert'] = error
 
     return render(request, 'test_task_korteks_app/job_title_add.html', context=context)
 
@@ -52,7 +60,14 @@ def job_title_change(request, job_title_id):
             context['message'] = 'Такая должность уже существует'
         except JobTitle.DoesNotExist:
             job_title.name = new_job_title_name
-            job_title.save()
+
+            try:
+                job_title.clean_fields()
+                job_title.save()
+            except ValidationError as error:
+                context['alert'] = error
+                return render(request, 'test_task_korteks_app/job_title_change.html', context)
+
             return redirect('test_task_korteks_app:job_title_detail', job_title_id=job_title_id)
     return render(request, 'test_task_korteks_app/job_title_change.html', context)
 
@@ -97,14 +112,20 @@ def employee_add(request):
             job_title = JobTitle.objects.get(name=job_title_name)
         except KeyError:
             job_title = None
-        Employee.objects.create(
+        new_employee = Employee(
             surname=surname,
             firstname=firstname,
             father_name=father_name,
             employment_date=employment_date,
             job_title=job_title
         )
-        context['message'] = 'Добавлен новый сотрудник'
+
+        try:
+            new_employee.clean_fields()
+            new_employee.save()
+            context['message'] = 'Добавлен новый сотрудник'
+        except ValidationError as error:
+            context['alert'] = error
 
     return render(request, 'test_task_korteks_app/employee_add.html', context=context)
 
@@ -118,6 +139,7 @@ def employee_change(request, employee_id):
     }
 
     if request.method == 'POST':
+
         surname = request.POST['surname']
         firstname = request.POST['firstname']
         try:
@@ -135,8 +157,13 @@ def employee_change(request, employee_id):
         employee.father_name = father_name
         employee.employment_date = employment_date
         employee.job_title = job_title
-        employee.save()
-        context['message'] = 'Изменено'
+        try:
+            employee.clean_fields()
+            employee.save()
+            return redirect('test_task_korteks_app:employee_detail', employee_id=employee_id)
+        except ValidationError as error:
+            context['employee'] = Employee.objects.get(id=employee_id)
+            context['alert'] = error
 
     return render(request, 'test_task_korteks_app/employee_change.html', context=context)
 

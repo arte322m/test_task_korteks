@@ -19,5 +19,9 @@
     {% if message %}
         {{ message }}
     {% endif %}
+    {% if alert %}
+        Название: {{ alert.message_dict.name|first }}
+        <br>
+    {% endif %}
 
 {% endblock %}

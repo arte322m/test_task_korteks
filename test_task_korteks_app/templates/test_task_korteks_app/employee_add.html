@@ -47,5 +47,17 @@
     {% if message %}
         {{ message }}
     {% endif %}
+    {% if alert %}
+        {% for field, err in alert %}
+            {% if field == 'firstname' %}
+                Имя: {{ err|first }}
+            {% elif field == 'surname' %}
+                Фамилия: {{ err|first }}
+            {% elif field == 'father_name' %}
+                Отчество: {{ err|first }}
+            {% endif %}
+                <br>
+        {% endfor %}
+    {% endif %}
 
 {% endblock %}
